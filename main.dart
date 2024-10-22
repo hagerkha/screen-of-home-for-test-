@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:device_preview/device_preview.dart';
 
+import 'list.dart';
+
 void main() {
   runApp(
     DevicePreview(
@@ -21,7 +23,29 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  int _selectedIndex = 0;
+
+  // قائمة الصفحات للتنقل بينها
+  static List<Widget> _pages = <Widget>[
+    HomeScreen(),
+   list(),  // صفحة List الجديدة
+    CartPage(),
+    FavoritesPage(),
+    ProfilePage(),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,21 +65,7 @@ class MyHomePage extends StatelessWidget {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            _buildWelcomeSection(),
-            SizedBox(height: 20),
-            _buildCategoriesSection(),
-            SizedBox(height: 20),
-            _buildKitchenSection(),
-            SizedBox(height: 20),
-            _buildProductList(),
-            SizedBox(height: 20),
-          ],
-        ),
-      ),
+      body: _pages[_selectedIndex],  // عرض الصفحة بناءً على الاختيار
       bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(
@@ -79,11 +89,33 @@ class MyHomePage extends StatelessWidget {
             label: 'Profile',
           ),
         ],
-        currentIndex: 0,
+        currentIndex: _selectedIndex,
         selectedItemColor: Color(0xFFF4B5A4),
         unselectedItemColor: Color(0xFFF4B5A4),
         backgroundColor: Color(0xFFF4B5A4),
-        onTap: (index) {},
+        onTap: _onItemTapped, // تغيير الصفحة بناءً على الأيقونة المختارة
+      ),
+    );
+  }
+}
+
+// الصفحة الرئيسية (Home)
+class HomeScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: <Widget>[
+          _buildWelcomeSection(),
+          SizedBox(height: 20),
+          _buildCategoriesSection(),
+          SizedBox(height: 20),
+          _buildKitchenSection(),
+          SizedBox(height: 20),
+          _buildProductList(),
+          SizedBox(height: 20),
+        ],
       ),
     );
   }
@@ -113,7 +145,7 @@ class MyHomePage extends StatelessWidget {
                   fit: BoxFit.cover,
                 ),
                 Image.asset(
-                  'assets/img_5.png',
+                  'assets/imm.png',
                   fit: BoxFit.cover,
                 ),
               ],
@@ -203,7 +235,7 @@ class MyHomePage extends StatelessWidget {
             right: -20,
             top: -20,
             child: Image.asset(
-              'assets/img_4.png',
+              'assets/im.png',
               width: 160,
               height: 160,
               fit: BoxFit.cover,
@@ -312,6 +344,45 @@ class MyHomePage extends StatelessWidget {
           return Icon(Icons.star_border, color: Color(0xFFF4B5A4), size: 16);
         }
       }),
+    );
+  }
+}
+
+
+
+// صفحات أخرى
+class CartPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(
+        'This is the Cart Page',
+        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+}
+
+class FavoritesPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(
+        'This is the Favorites Page',
+        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+}
+
+class ProfilePage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Text(
+        'This is the Profile Page',
+        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+      ),
     );
   }
 }
